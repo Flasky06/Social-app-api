@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,4 +47,37 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(newUser);
     }
+
+    @Override
+    public Optional<User> getUser(UUID Id) {
+        return userRepository.findById(Id);
+    }
+
+    @Override
+    public User updateUser(UUID userId, User user) {
+        if (null == user.getId()) {
+            throw new IllegalArgumentException("User must have Id");
+        }
+        if (!Objects.equals(user.getId(), userId)) {
+            throw new IllegalArgumentException("Attempting to change UserId not permitted!");
+        }
+        User foundUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        foundUser.setName(user.getName());
+        foundUser.setIdNo(user.getIdNo());
+        foundUser.setPhoneNo(user.getPhoneNo());
+        foundUser.setCounty(user.getCounty());
+        foundUser.setDob(user.getDob());
+        foundUser.setGender(user.getGender());
+        foundUser.setUpdated(LocalDateTime.now());
+
+        return userRepository.save(foundUser);
+    }
+
+    @Override
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+
 }

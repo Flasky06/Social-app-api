@@ -16,7 +16,6 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -41,7 +40,7 @@ public class User {
     @Column(name = "updated",nullable = false)
     private LocalDateTime updated;
 
-    public User(Object o, String name, Long idNo, Long phoneNo, LocalDate dob, String county, Gender gender) {
+    public User() {
     }
 
     public User(UUID id, String name, Long idNo, Long phoneNo, String county, LocalDate dob, Gender gender, LocalDateTime created, LocalDateTime updated) {
